@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./index.css";
 import { FaUser, FaShoppingCart, FaBars } from "react-icons/fa";
 import { FaMagnifyingGlass, FaXmark } from "react-icons/fa6";
@@ -7,6 +7,33 @@ function App() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(24 * 60 * 60); // 24 hours in seconds
+
+  // Timer effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Format time as HH:MM:SS
+  const formatTime = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+
+    return `${hours.toString().padStart(2, '0')}:${minutes
+      .toString()
+      .padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -31,10 +58,13 @@ function App() {
           <div className="sing_in_up">
             <a href="#">SIGN IN</a>
             <a href="#">SIGN UP</a>
+            <div className="countdown-timer">
+              Sale ends in: {formatTime(timeLeft)}
+            </div>
           </div>
         </div>
       </section>
-      
+
 
       <nav className="navbar">
         <div className="navbar-container">
@@ -86,12 +116,14 @@ function App() {
           </div>
 
           <div className={`search-box ${isSearchOpen ? "active" : ""}`}>
-            <FaMagnifyingGlass id="FaMagnifyingGlass" />
+            <span className="FaMagnifyingGlass"><FaMagnifyingGlass id="FaMagnifyingGlass" /></span>
             <input type="text" placeholder="S E A R C H  F O R . . ." />
-            <FaXmark onClick={toggleSearch} id="FaXmark" />
+            <span className="FaXmark"><FaXmark onClick={toggleSearch} id="FaXmark"/></span>
+            {/* <span className="FaXmark"><IoMdClose onClick={toggleSearch} id="FaXmark"/></span> */}
           </div>
         </div>
       </nav>
+
     </>
   );
 }
