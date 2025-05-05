@@ -214,7 +214,7 @@ body {
 
   .navbar-container ul{
       width: 80%;    
-      height: 93vh;
+      height: 95vh;
       position: absolute;
       top: 0px;
       right: 890px;
@@ -270,11 +270,11 @@ body {
 
   .navbar-container ul hr{
       display: block;
-      margin-top: 370px;
+      margin-top: 400px;
   }
 
   .navbar-container ul .user span{
-      font-size: 12px;
+      font-size: 18px;
       padding-left: 10px;
   }
 
